@@ -1,0 +1,11 @@
+{
+  "manufacturer": "VW",
+  "year": 2020,
+  "models": [
+    "Polo",
+    "Golf",
+    "Touran",
+    "ID-3",
+    "Tiguan"
+  ]
+}
