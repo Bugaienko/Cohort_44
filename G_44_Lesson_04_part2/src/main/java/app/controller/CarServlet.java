@@ -66,10 +66,6 @@ public class CarServlet extends HttpServlet {
 
         }
 
-
-
-
-
 //        cars.forEach(car -> {
 //            try {
 //                response.getWriter().write(car.toString() + "\n");
@@ -79,9 +75,30 @@ public class CarServlet extends HttpServlet {
 //        });
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Для сохранения нового автомобиля в БД
+
+         /*
+        Request - это объект запроса. Из него мы можем извлечь все, что прислал клиент
+        Response - это объект ответа, который будет направлен клиенту.
+        Мы можем в этот объект ответа поместить всю информацию, которую мы хотим отправить клиенту.
+         */
+
+        // Данные автомобиля, отправленные клиентом в виде JSON
+        // считываются из тела запроса и преобразуются в Java-объект типа Car.
+        Car car = mapper.readValue(request.getReader(), Car.class);
+
+        // отправление полученных данных на обработку в нащ App
+        // получаем результат обработки данных из приложения
+        Car result = repository.save(car);
+
+        // Преобразуем java-объект car обратно JSON
+        String json = mapper.writeValueAsString(result);
+
+        // Полученный JSON отправляем клиенту
+        response.getWriter().write(json);
 
     }
 

@@ -3,9 +3,8 @@ package app.repository;
 import app.constants.Constants;
 import app.model.Car;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.List;
 
 import static app.constants.Constants.*;
@@ -32,28 +31,95 @@ public class CarRepositoryDB implements CarRepository{
     }
 
 
+
     @Override
     public List<Car> getAll() {
+        //TODO Homework
+        try (Connection connection = getConnection()) {
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return List.of();
     }
 
     @Override
     public Car save(Car car) {
-        return null;
+
+        try (Connection connection = getConnection()) {
+            String query = String.format("INSERT INTO car (brand, price, year) VALUES ('%s', '%s', %d);",
+                    car.getBrand(), car.getPrice(), car.getYear());
+
+            // Интерфейс, который умеет осуществлять запросы в БД
+            Statement statement = connection.createStatement();
+
+            // execute() - для внесения изменений в БД
+            // executeQuery() - для получение данных
+
+            statement.execute(query, Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+
+            // Вытаскиваю значение из первой строчки Result-сета, в колонке "id" и преобразую его в формат Long;
+            resultSet.next();
+            Long id = resultSet.getLong("id");
+
+            car.setId(id);
+
+            return car;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
     public Car findById(long id) {
-        return null;
+        try (Connection connection = getConnection()) {
+
+            String query = String.format("SELECT * FROM car WHERE id = %d;", id);
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                // пришла строка с автомобилем
+                String brand = resultSet.getString("brand");
+                BigDecimal price = resultSet.getBigDecimal("price");
+                int year = resultSet.getInt("year");
+
+                return new Car(id, brand, price, year);
+
+
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
     public Car update(Car car) {
+        //TODO Homework
+        try (Connection connection = getConnection()) {
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     @Override
     public void delete(Car car) {
+        try (Connection connection = getConnection()) {
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        //TODO Homework
     }
 }
