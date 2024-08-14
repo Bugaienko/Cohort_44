@@ -42,5 +42,16 @@ public class CarRepositoryMap implements CarRepository {
         return database.getOrDefault(id, null);
     }
 
+    @Override
+    public Car update(Car car) {
+        // TODO Домашнее задание
+        return null;
+    }
+
+    @Override
+    public void delete(Car car) {
+        // TODO Домашнее задание
+    }
+
 
 }
